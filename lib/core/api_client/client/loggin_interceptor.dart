@@ -20,6 +20,7 @@ class DioLogInterceptors extends Interceptor {
     if (options.data != null && (printBody ?? false)) {
       debugPrint("Body: ${options.data}");
     }
+    
     debugPrint("--> END ${options.method.toUpperCase()}");
     return super.onRequest(options, handler);
   }

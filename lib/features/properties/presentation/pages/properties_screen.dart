@@ -3,7 +3,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:patahao/common/helpers/base_usecase.dart';
 import 'package:patahao/common/res/colors.dart';
+import 'package:patahao/common/res/l10n.dart';
 import 'package:patahao/common/utils/debouncer.dart';
+import 'package:patahao/features/properties/domain/usecases/list_properties_usecase.dart';
 import 'package:patahao/features/properties/presentation/bloc/properties_bloc.dart';
 import 'package:patahao/features/properties/presentation/widgets/properties_list.dart';
 import 'package:flutter/material.dart';
@@ -103,11 +105,29 @@ class _PropertiesScreenState extends State<PropertiesScreen> {
                       style: TextStyle(fontSize: 16),
                       onChanged: (value) {
                         if (value.isEmpty) return;
-                        queryParams = queryParams.copyWith(city: value);
+
+                        // Smart search: check if user included state code
+                        String searchCity = value;
+                        String? searchState;
+
+                        if (value.contains(',')) {
+                          // User typed something like "Los Angeles, CA"
+                          final parts = value.split(',');
+                          searchCity = parts[0].trim();
+                          if (parts.length > 1) {
+                            searchState = parts[1].trim();
+                          }
+                        }
+
+                        queryParams = queryParams.copyWith(
+                          city: searchCity,
+                          stateCode: searchState,
+                        );
+
                         debouncer.run(
                             timeout: 1000,
                             () => propertiesBloc.add(SearchPropertiesEvent(
-                                query: value, stateCode: 'NY')));
+                                query: searchCity, stateCode: searchState)));
                       },
                     ),
                   ),

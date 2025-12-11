@@ -68,12 +68,27 @@ class PropertiesBloc extends Bloc<PropertiesEvent, PropertiesState> {
   FutureOr<void> _searchProperties(
       SearchPropertiesEvent event, Emitter<PropertiesState> emit) async {
     emit(PropertiesLoadingState());
-    final params = GetPropertiesParams(
-      city: event.query,
-      stateCode: event.stateCode,
-      limit: 20,
-      offset: 0,
-    );
+
+    GetPropertiesParams params;
+
+    if (event.useAsFullLocation) {
+      // User selected from autocomplete or entered full location
+      params = GetPropertiesParams(
+        city: event.query, // This will be used as the full location
+        stateCode: null, // Don't append state code
+        limit: 20,
+        offset: 0,
+      );
+    } else {
+      // User is typing, try to be smart about it
+      params = GetPropertiesParams(
+        city: event.query,
+        stateCode: event.stateCode ?? 'NY', // Default to NY if not provided
+        limit: 20,
+        offset: 0,
+      );
+    }
+
     final response = await _listPropertiesUsecase.call(params);
     emit(response.fold(
       (error) => ListPropertiesError(error: error.toString()),

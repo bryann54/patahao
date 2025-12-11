@@ -30,12 +30,15 @@ class LoadMorePropertiesEvent extends PropertiesEvent {
 class SearchPropertiesEvent extends PropertiesEvent {
   final String query;
   final String? stateCode;
+  final bool
+      useAsFullLocation; 
 
   const SearchPropertiesEvent({
     required this.query,
     this.stateCode,
+    this.useAsFullLocation = false,
   });
 
   @override
-  List<Object> get props => [query];
+  List<Object> get props => [query, stateCode ?? '', useAsFullLocation];
 }

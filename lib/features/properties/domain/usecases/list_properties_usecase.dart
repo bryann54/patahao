@@ -18,9 +18,24 @@ class ListPropertiesUsecase
   @override
   Future<Either<Failure, PropertySearchResponse>> call(
       GetPropertiesParams params) async {
+    // Determine the location string
+    String? location;
+
+    if (params.city != null) {
+      // Check if city already contains a comma (indicating it's a full location)
+      if (params.city!.contains(',')) {
+        location = params.city; // Use as-is
+      } else if (params.stateCode != null) {
+        // Combine city and state
+        location = '${params.city}, ${params.stateCode}';
+      } else {
+        // Just use the city name
+        location = params.city;
+      }
+    }
+
     return await _repo.listProperties(QueryPropertyModel(
-      city: params.city,
-      stateCode: params.stateCode,
+      location: location,
       limit: params.limit ?? 20,
       offset: params.offset ?? 0,
       sort: params.sort ?? 'relevance',

@@ -10,6 +10,7 @@ import 'package:patahao/features/properties/domain/repositories/properties_repos
 import 'package:dartz/dartz.dart';
 import 'package:injectable/injectable.dart';
 
+
 @LazySingleton(as: PropertiesRepository)
 class PropertiesRepositoryImpl implements PropertiesRepository {
   final PropertiesRemoteDatasource _remoteDatasource;
@@ -60,7 +61,7 @@ class PropertiesRepositoryImpl implements PropertiesRepository {
     } on ServerException {
       return const Left(ServerFailure());
     } catch (e) {
-      return Left(ServerFailure(badResponse: ServerError()));
+       return Left(ServerFailure(badResponse: ServerError()));
     }
   }
 }

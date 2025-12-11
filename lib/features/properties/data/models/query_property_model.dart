@@ -8,9 +8,10 @@ part 'query_property_model.g.dart';
 @JsonSerializable()
 class QueryPropertyModel extends Equatable {
   final String? input; // For autocomplete
-  final String? city;
+  final String? location; // For search-buy endpoint (e.g., "New York, NY")
+  final String? city; // For v3/list endpoint
   @JsonKey(name: 'state_code')
-  final String? stateCode;
+  final String? stateCode; // For v3/list endpoint
   final int? limit;
   final int? offset;
   final String? sort; // relevance, price_low, price_high, newest
@@ -38,6 +39,7 @@ class QueryPropertyModel extends Equatable {
 
   const QueryPropertyModel({
     this.input,
+    this.location,
     this.city,
     this.stateCode,
     this.limit,
@@ -66,6 +68,7 @@ class QueryPropertyModel extends Equatable {
 
   QueryPropertyModel copyWith({
     String? input,
+    String? location,
     String? city,
     String? stateCode,
     int? limit,
@@ -83,6 +86,7 @@ class QueryPropertyModel extends Equatable {
   }) {
     return QueryPropertyModel(
       input: input ?? this.input,
+      location: location ?? this.location,
       city: city ?? this.city,
       stateCode: stateCode ?? this.stateCode,
       limit: limit ?? this.limit,
@@ -103,6 +107,7 @@ class QueryPropertyModel extends Equatable {
   @override
   List<Object?> get props => [
         input,
+        location,
         city,
         stateCode,
         limit,

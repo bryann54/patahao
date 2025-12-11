@@ -9,6 +9,7 @@ part of 'query_property_model.dart';
 QueryPropertyModel _$QueryPropertyModelFromJson(Map<String, dynamic> json) =>
     QueryPropertyModel(
       input: json['input'] as String?,
+      location: json['location'] as String?,
       city: json['city'] as String?,
       stateCode: json['state_code'] as String?,
       limit: (json['limit'] as num?)?.toInt(),
@@ -28,6 +29,7 @@ QueryPropertyModel _$QueryPropertyModelFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$QueryPropertyModelToJson(QueryPropertyModel instance) =>
     <String, dynamic>{
       'input': instance.input,
+      'location': instance.location,
       'city': instance.city,
       'state_code': instance.stateCode,
       'limit': instance.limit,
